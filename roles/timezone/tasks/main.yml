@@ -1,0 +1,21 @@
+---
+- name: Install tzdata
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Link the correct time zone to /etc/localtime
+  become: true
+  ansible.builtin.file:
+    path: /etc/localtime
+    state: link
+    src: "/usr/share/zoneinfo/{{ timezone__zone }}"
+    force: true
+    mode: "0644"
+
+- name: Set current time zone in /etc/timezone
+  become: true
+  ansible.builtin.copy:
+    content: "{{ timezone__zone }}"
+    dest: /etc/timezone
+    owner: root
+    group: root
+    mode: "0644"
