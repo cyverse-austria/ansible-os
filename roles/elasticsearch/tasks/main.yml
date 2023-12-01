@@ -1,5 +1,5 @@
 ---
-- name: Install rabbitmq
+- name: Install elasticsearch
   ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
 
 - name: Change or add JVM heap-size
