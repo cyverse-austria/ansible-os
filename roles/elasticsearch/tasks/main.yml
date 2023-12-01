@@ -1,6 +1,6 @@
 ---
-# - name: Install rabbitmq
-#   ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+- name: Install rabbitmq
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
 
 - name: Change or add JVM heap-size
   ansible.builtin.lineinfile:
