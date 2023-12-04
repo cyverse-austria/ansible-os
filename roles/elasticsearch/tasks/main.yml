@@ -1,30 +1,48 @@
 ---
-- name: Install elasticsearch
-  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+- name: Create compose-driver
+  ansible.builtin.file:
+    path: /home/docker/es_compose
+    state: directory
+    owner: docker
+    group: docker
+    mode: "0755"
 
-- name: Change or add JVM heap-size
-  ansible.builtin.lineinfile:
-    path: /etc/elasticsearch/jvm.options
-    regexp: "{{ item }}"
-    backrefs: true
-    line: '\g<1>4g'
-  with_items:
-    - '^(-Xmx)[1-9].*'
-    - '^(-Xms)[1-9].*'
+- name: Create docker-compose-file
+  ansible.builtin.template:
+    src: es_compose.yml.j2
+    dest: /home/docker/es_compose/es_compose.yml
+    owner: docker
+    group: docker
+    mode: "0664"
 
-- name: Add ports
-  ansible.builtin.lineinfile:
-    path: /etc/elasticsearch/elasticsearch.yml
-    line: "{{ item }}"
-  with_items:
-    - "http.port: 9200"
-    - "transport.port: 9300"
+- name: Create and start services
+  community.docker.docker_compose:
+    project_src: /home/docker/es_compose
+    files: es_compose.yml
+  register: _elasticsearch__output
+  become: true
+  become_user: docker
 
-- name: Set kernel map-ccount
-  ansible.posix.sysctl:
-    name: vm.max_map_count
-    value: '262144'
-    sysctl_set: true
-    state: present
-    reload: true
-# tasks file for elasticsearch
+- name: Verify that web and db services are running
+  ansible.builtin.assert:
+    that:
+      - "_elasticsearch__output.services.es.es_compose_es_1.state.running"
+
+- name: Delete the index
+  ansible.builtin.uri:
+    url: http://localhost:9200/*
+    method: DELETE
+  register: _elasticsearch__indexdelete
+
+- name: CREATE the index
+  ansible.builtin.uri:
+    url: http://localhost:9200/data
+    method: PUT
+    body_format: json
+    src: settings.json
+  register: _elasticsearch__indexcreate
+
+- name: Verify index is created
+  ansible.builtin.assert:
+    that:
+      - _elasticsearch__indexcreate.json.shards_acknowledged

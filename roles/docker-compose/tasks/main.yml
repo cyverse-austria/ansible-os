@@ -1,0 +1,11 @@
+---
+- name: Install repos and packages
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Download Docker Compose
+  ansible.builtin.get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+    dest: /usr/bin/docker-compose
+    mode: '0755'
+  vars:
+    docker_compose_version: 1.29.2  # Change this to the desired version

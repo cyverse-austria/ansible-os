@@ -1,0 +1,31 @@
+---
+# Users and groups
+- name: Users and groups
+  tags:
+    - config
+    - config_user
+  notify:
+    - Restart and enable docker
+  block:
+    - name: Add the docker group
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Add the docker user
+      ansible.builtin.user:
+        name: docker
+        shell: /bin/bash
+        groups: docker
+        append: true
+
+    - name: Add the condor user to the docker group
+      when: "'condor' in group_names"
+      ansible.builtin.user:
+        name: condor
+        groups: docker
+        append: true
+        state: "present"
+
+    - name: Install repos and packages
+      ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
