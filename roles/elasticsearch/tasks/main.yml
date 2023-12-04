@@ -33,6 +33,9 @@
     url: http://localhost:9200/*
     method: DELETE
   register: _elasticsearch__indexdelete
+  retries: 5
+  delay: 5
+  until: _elasticsearch__indexdelete.msg is search("OK")
 
 - name: CREATE the index
   ansible.builtin.uri:
