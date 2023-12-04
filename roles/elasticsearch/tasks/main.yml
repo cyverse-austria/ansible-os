@@ -1,4 +1,12 @@
 ---
+- name: Set kernel map-ccount
+  ansible.posix.sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    sysctl_set: true
+    state: present
+    reload: true
+
 - name: Create compose-driver
   ansible.builtin.file:
     path: /home/docker/es_compose
