@@ -19,7 +19,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    mem_limit: {{ elasticsearch__mem_limit }}
     ports:
       - "9200:9200"
       - "9300:9300"
