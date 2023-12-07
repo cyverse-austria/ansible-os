@@ -5,7 +5,7 @@
     # state: latest
     update_cache: true
 
-- name: Ensure tzdata is installed
+- name: Ensure sudo is installed
   become: true
   ansible.builtin.apt:
     name: sudo
