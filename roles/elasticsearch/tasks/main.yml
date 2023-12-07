@@ -53,6 +53,13 @@
     src: settings.json
   register: _elasticsearch__indexcreate
 
+- name: Change number of replicas  for **all** indices to {{ elasticsearch__number_of_replicas }}
+  ansible.builtin.uri:
+    url: http://localhost:9200/*/_settings
+    method: PUT
+    body_format: json
+    body: '{ "index" : { "number_of_replicas" : "{{ elasticsearch__number_of_replicas }}" } }'
+
 - name: Verify index is created
   ansible.builtin.assert:
     that:
