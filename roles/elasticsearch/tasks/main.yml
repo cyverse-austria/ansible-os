@@ -1,4 +1,7 @@
 ---
+- name: Install tzdata
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
 - name: Set kernel map-ccount
   ansible.posix.sysctl:
     name: vm.max_map_count
