@@ -37,7 +37,8 @@
 - name: Verify that web and db services are running
   ansible.builtin.assert:
     that:
-      - "_elasticsearch__output.services.es.es_compose_es_1.state.running"
+      - "_elasticsearch__output.services.es1.es_compose_es1_1.state.running"
+      - "_elasticsearch__output.services.es2.es_compose_es2_1.state.running"
 
 - name: Delete the index
   ansible.builtin.uri:
@@ -60,19 +61,19 @@
   ansible.builtin.assert:
     that:
       - _elasticsearch__indexcreate.json.shards_acknowledged
-
-- name: Change number of replicas  for **all** indices to {{ elasticsearch__number_of_replicas }}
-  ansible.builtin.uri:
-    url: http://localhost:9200/*/_settings
-    method: PUT
-    body_format: json
-    body: >-
-      {
-        "index": {
-          "number_of_replicas": "{{ elasticsearch__number_of_replicas }}"
-        }
-      }
-  when:
-    - elasticsearch__number_of_replicas == "0"
-  tags:
-    - "set replaicas to 0"
+#
+# - name: Change number of replicas  for **all** indices to {{ elasticsearch__number_of_replicas }}
+#   ansible.builtin.uri:
+#     url: http://localhost:9200/*/_settings
+#     method: PUT
+#     body_format: json
+#     body: >-
+#       {
+#         "index": {
+#           "number_of_replicas": "{{ elasticsearch__number_of_replicas }}"
+#         }
+#       }
+#   when:
+#     - elasticsearch__number_of_replicas == "0"
+#   tags:
+#     - "set replaicas to 0"
