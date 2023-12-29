@@ -5,7 +5,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:{{ elasticsearch__version }}
     restart: "unless-stopped"
     environment:
-      - bootstrap.memory_lock=true
+      # - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms{{ elasticsearch__jvm_heapsize }} -Xmx{{ elasticsearch__jvm_heapsize }}"
       - node.max_local_storage_nodes=2
       # - discovery.type=single-node
@@ -30,12 +30,12 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:{{ elasticsearch__version }}
     restart: "unless-stopped"
     environment:
-      - bootstrap.memory_lock=true
+      # - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms{{ elasticsearch__jvm_heapsize }} -Xmx{{ elasticsearch__jvm_heapsize }}"
       - node.max_local_storage_nodes=2
       # - discovery.type=single-node
       - xpack.security.enabled=false
-      - discovery.zen.ping.unicast.hosts=es1
+      - discovery.zen.ping.unicast.hosts=es1:9300
     # healthcheck:
     #   test: ["CMD", "curl", "-f", "localhost:9200/_cluster/health?wait_for_status=green"]
     #   interval: 30s
