@@ -20,7 +20,8 @@
 
 - name: Create docker-compose-file
   ansible.builtin.template:
-    src: es_compose.yml.j2
+    # src: es_compose.yml.j2
+    src: os_compose.yml.j2
     dest: /home/docker/es_compose/es_compose.yml
     owner: docker
     group: docker
