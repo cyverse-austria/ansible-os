@@ -12,7 +12,7 @@
 
 - name: Create compose-driver
   ansible.builtin.file:
-    path: /home/docker/es_compose
+    path: /home/docker/os_compose
     state: directory
     owner: docker
     group: docker
@@ -20,26 +20,26 @@
 
 - name: Create docker-compose-file
   ansible.builtin.template:
-    # src: es_compose.yml.j2
+    # src: os_compose.yml.j2
     src: os_compose.yml.j2
-    dest: /home/docker/es_compose/es_compose.yml
+    dest: /home/docker/os_compose/os_compose.yml
     owner: docker
     group: docker
     mode: "0664"
 
 - name: Create and start services
   community.docker.docker_compose:
-    project_src: /home/docker/es_compose
-    files: es_compose.yml
+    project_src: /home/docker/os_compose
+    files: os_compose.yml
   register: _elasticsearch__output
   become: true
   become_user: docker
 
-- name: Verify that web and db services are running
+- name: Verify that nodes are running
   ansible.builtin.assert:
     that:
-      - "_elasticsearch__output.services.es1.es_compose_es1_1.state.running"
-      - "_elasticsearch__output.services.es2.es_compose_es2_1.state.running"
+      - "_elasticsearch__output.services.opensearch-node1.os_compose_opensearch-node1_1.state.running"
+      - "_elasticsearch__output.services.opensearch-node2.os_compose_opensearch-node2_1.state.running"
 
 - name: Delete the index
   ansible.builtin.uri:
