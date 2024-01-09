@@ -42,27 +42,29 @@
 #       - "_elasticsearch__output.services.opensearch-node1.os_compose_opensearch-node1_1.state.running"
 #       - "_elasticsearch__output.services.opensearch-node2.os_compose_opensearch-node2_1.state.running"
 
-- name: Delete the index
-  ansible.builtin.uri:
-    url: http://localhost:9200/*
-    method: DELETE
-  register: _elasticsearch__indexdelete
-  retries: 5
-  delay: 5
-  until: _elasticsearch__indexdelete.msg is search("OK")
+# TODO: bring back
+# # - name: Delete the index
+#   ansible.builtin.uri:
+#     url: http://localhost:9200/*
+#     method: DELETE
+#   register: _elasticsearch__indexdelete
+#   retries: 5
+#   delay: 5
+#   until: _elasticsearch__indexdelete.msg is search("OK")
 
-- name: CREATE the index
-  ansible.builtin.uri:
-    url: http://localhost:9200/data
-    method: PUT
-    body_format: json
-    src: settings.json
-  register: _elasticsearch__indexcreate
+## TODO: double check this URL
+# - name: CREATE the index
+#   ansible.builtin.uri:
+#     url: http://localhost:9200/data
+#     method: PUT
+#     body_format: json
+#     src: settings.json
+#   register: _elasticsearch__indexcreate
 
-- name: Verify index is created
-  ansible.builtin.assert:
-    that:
-      - _elasticsearch__indexcreate.json.shards_acknowledged
+# - name: Verify index is created
+#   ansible.builtin.assert:
+#     that:
+#       - _elasticsearch__indexcreate.json.shards_acknowledged
 #
 # - name: Change number of replicas  for **all** indices to {{ elasticsearch__number_of_replicas }}
 #   ansible.builtin.uri:
