@@ -1,233 +1,7 @@
 {
-  "mappings": {
-    "file": {
-      "properties": {
-        "creator": {
-          "type": "keyword"
-        },
-        "dateCreated": {
-          "type": "date"
-        },
-        "dateModified": {
-          "type": "date"
-        },
-        "fileSize": {
-          "type": "long"
-        },
-        "fileType": {
-          "type": "keyword"
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "label": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword"
-            }
-          },
-          "analyzer": "irods_entity"
-        },
-        "metadata": {
-          "type": "nested",
-          "properties": {
-            "attribute": {
-              "type": "text",
-              "analyzer": "irods_entity"
-            },
-            "unit": {
-              "type": "keyword"
-            },
-            "value": {
-              "type": "text"
-            }
-          }
-        },
-        "path": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword"
-            }
-          },
-          "analyzer": "irods_path"
-        },
-        "userPermissions": {
-          "type": "nested",
-          "properties": {
-            "permission": {
-              "type": "keyword"
-            },
-            "user": {
-              "type": "keyword"
-            }
-          }
-        }
-      }
-    },
-    "tag": {
-      "properties": {
-        "creator": {
-          "type": "keyword"
-        },
-        "dateCreated": {
-          "type": "date"
-        },
-        "dateModified": {
-          "type": "date"
-        },
-        "description": {
-          "type": "text"
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "targets": {
-          "type": "nested",
-          "properties": {
-            "id": {
-              "type": "keyword"
-            },
-            "type": {
-              "type": "keyword"
-            }
-          }
-        },
-        "value": {
-          "type": "text",
-          "analyzer": "tag_value"
-        }
-      }
-    },
-    "file_metadata": {
-      "_parent": {
-        "type": "file"
-      },
-      "_routing": {
-        "required": true
-      },
-      "properties": {
-        "id": {
-          "type": "keyword"
-        },
-        "metadata": {
-          "type": "nested",
-          "properties": {
-            "attribute": {
-              "type": "text",
-              "analyzer": "irods_entity"
-            },
-            "unit": {
-              "type": "keyword"
-            },
-            "value": {
-              "type": "text"
-            }
-          }
-        }
-      }
-    },
-    "folder": {
-      "properties": {
-        "creator": {
-          "type": "keyword"
-        },
-        "dateCreated": {
-          "type": "date"
-        },
-        "dateModified": {
-          "type": "date"
-        },
-        "fileSize": {
-          "type": "long"
-        },
-        "fileType": {
-          "type": "keyword"
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "label": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword"
-            }
-          },
-          "analyzer": "irods_entity"
-        },
-        "metadata": {
-          "type": "nested",
-          "properties": {
-            "attribute": {
-              "type": "text",
-              "analyzer": "irods_entity"
-            },
-            "unit": {
-              "type": "keyword"
-            },
-            "value": {
-              "type": "text"
-            }
-          }
-        },
-        "path": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword"
-            }
-          },
-          "analyzer": "irods_path"
-        },
-        "userPermissions": {
-          "type": "nested",
-          "properties": {
-            "permission": {
-              "type": "keyword"
-            },
-            "user": {
-              "type": "keyword"
-            }
-          }
-        }
-      }
-    },
-    "folder_metadata": {
-      "_parent": {
-        "type": "folder"
-      },
-      "_routing": {
-        "required": true
-      },
-      "properties": {
-        "id": {
-          "type": "keyword"
-        },
-        "metadata": {
-          "type": "nested",
-          "properties": {
-            "attribute": {
-              "type": "text",
-              "analyzer": "irods_entity"
-            },
-            "unit": {
-              "type": "keyword"
-            },
-            "value": {
-              "type": "text"
-            }
-          }
-        }
-      }
-    }
-  },
   "settings": {
     "index": {
-      "mapper": {
-        "dynamic": "false"
-      },
+      "number_of_shards": "10",
       "analysis": {
         "analyzer": {
           "irods_entity": {
@@ -263,6 +37,113 @@
         }
       },
       "number_of_replicas": "1"
+    }
+  },
+  "mappings": {
+    "properties": {
+      "doc_type": {
+        "type": "keyword"
+      },
+      "creator": {
+        "type": "keyword"
+      },
+      "dateCreated": {
+        "type": "date"
+      },
+      "dateModified": {
+        "type": "date"
+      },
+      "fileSize": {
+        "type": "long"
+      },
+      "fileType": {
+        "type": "keyword"
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "label": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        },
+        "analyzer": "irods_entity"
+      },
+      "metadata": {
+        "dynamic": false,
+        "properties": {
+          "irods": {
+            "type": "nested",
+            "properties": {
+              "attribute": {
+                "type": "text",
+                "analyzer": "irods_entity"
+              },
+              "unit": {
+                "type": "keyword"
+              },
+              "value": {
+                "type": "text"
+              }
+      }
+          },
+          "cyverse": {
+            "type": "nested",
+            "properties": {
+              "attribute": {
+                "type": "text",
+                "analyzer": "irods_entity"
+              },
+              "unit": {
+                "type": "keyword"
+              },
+              "value": {
+                "type": "text"
+              }
+      }
+          }
+        }
+      },
+      "path": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        },
+        "analyzer": "irods_path"
+      },
+      "userPermissions": {
+        "type": "nested",
+        "properties": {
+          "permission": {
+            "type": "keyword"
+          },
+          "user": {
+            "type": "keyword"
+          }
+        }
+      },
+      "description": {
+        "type": "text"
+      },
+      "targets": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          }
+        }
+      },
+      "value": {
+        "type": "text",
+        "analyzer": "tag_value"
+      }
     }
   }
 }
