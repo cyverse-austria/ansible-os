@@ -37,7 +37,7 @@ services:
       - discovery.seed_hosts=opensearch-node1,opensearch-node2
       - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2
       - bootstrap.memory_lock=true
-      - "OPENSEARCH_JAVA_OPTS=-Xms{{ elasticsearch__jvm_heapsize }} -Xmx{{ elasticsearch__jvm_heapsize }}"
+      - "OPENSEARCH_JAVA_OPTS=-Xms{{ opensearch__jvm_heapsize }} -Xmx{{ opensearch__jvm_heapsize }}"
       - "DISABLE_SECURITY_PLUGIN=true"
       - "DISABLE_INSTALL_DEMO_CONFIG=true"
     ulimits:
@@ -49,7 +49,7 @@ services:
         hard: 65536
     volumes:
       - opensearch-data2:/usr/share/opensearch/data
-      
+ 
 volumes:
   opensearch-data1:
   opensearch-data2:
