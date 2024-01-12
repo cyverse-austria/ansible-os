@@ -1,4 +1,4 @@
 ---
 # will be overwritten from pipeline
 # otherwise the `role-default` will be used
-# opensearch__version: "2.11.0""
+# opensearch__version: "2.11.0"
