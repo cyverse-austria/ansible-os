@@ -1,0 +1,7 @@
+---
+- name: Run Jaeger init
+  hosts: all # change to single node
+  gather_facts: false
+  tasks:
+    - name: Run Jaeger init Docker container
+      command: "docker run -it --rm --net=host jaegertracing/jaeger-es-rollover:1.52 init http://{{ api_host }}:9200" # TODO add 1.25 version as var
