@@ -6,7 +6,7 @@ services:
     restart: "unless-stopped"
     environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms{{ elasticsearch__jvm_heapsize }} -Xmx{{ elasticsearch__jvm_heapsize }}"
+      - "ES_JAVA_OPTS=-Xms{{ opensearch__jvm_heapsize }} -Xmx{{ opensearch__jvm_heapsize }}"
       - node.max_local_storage_nodes=2
       # - discovery.type=single-node
       - xpack.security.enabled=false
@@ -20,7 +20,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: {{ elasticsearch__mem_limit }}
+    mem_limit: {{ opensearch__mem_limit }}
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -32,7 +32,7 @@ services:
     restart: "unless-stopped"
     environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms{{ elasticsearch__jvm_heapsize }} -Xmx{{ elasticsearch__jvm_heapsize }}"
+      - "ES_JAVA_OPTS=-Xms{{ opensearch__jvm_heapsize }} -Xmx{{ opensearch__jvm_heapsize }}"
       - node.max_local_storage_nodes=2
       # - discovery.type=single-node
       - xpack.security.enabled=false
@@ -47,7 +47,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: {{ elasticsearch__mem_limit }}
+    mem_limit: {{ opensearch__mem_limit }}
     volumes:
       - es2-data:/usr/share/elasticsearch/data
 

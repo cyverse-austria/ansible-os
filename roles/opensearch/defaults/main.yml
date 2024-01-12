@@ -1,9 +1,7 @@
 ---
-elasticsearch__version: "5.6.14"
-elasticsearch__jvm_heapsize: "2g"
-elasticsearch__mem_limit: "4g"
+opensearch__jvm_heapsize: "2g"
+opensearch__mem_limit: "4g"
 opensearch__version: "2.11.0"
 opensearch__jvm_heapsize: "2g"
 api_host: "localhost"
-# elasticsearch__number_of_replicas: "0"
-# defaults file for elasticsearch
+# defaults file for opensearch
