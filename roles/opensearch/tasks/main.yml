@@ -1,0 +1,64 @@
+---
+- name: Install tzdata
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Set kernel map-ccount
+  ansible.posix.sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    sysctl_set: true
+    state: present
+    reload: true
+
+- name: Create compose-driver
+  ansible.builtin.file:
+    path: /home/docker/os_compose
+    state: directory
+    owner: docker
+    group: docker
+    mode: "0755"
+
+- name: Create docker-compose-file
+  ansible.builtin.template:
+    src: os_compose.yml.j2
+    dest: /home/docker/os_compose/os_compose.yml
+    owner: docker
+    group: docker
+    mode: "0664"
+
+- name: Create and start services
+  community.docker.docker_compose:
+    project_src: /home/docker/os_compose
+    files: os_compose.yml
+  register: _opensearch__output
+  become: true
+  become_user: docker
+
+- name: Verify that nodes are running
+  ansible.builtin.assert:
+    that:
+      - _opensearch__output.services['opensearch-node1']['opensearch-node1'].state.running
+      - _opensearch__output.services['opensearch-node2']['opensearch-node2'].state.running
+
+- name: Delete the index
+  ansible.builtin.uri:
+    url: "http://{{ api_host }}:9200/*"
+    method: DELETE
+  register: _opensearch__indexdelete
+  retries: 60
+  delay: 5
+  until: _opensearch__indexdelete.msg is search("OK")
+
+- name: CREATE the index
+  ansible.builtin.uri:
+    url: "http://{{ api_host }}:9200/data"
+    method: PUT
+    body_format: json
+    src: settings.json
+  register: _opensearch__indexcreate
+
+- name: Verify index is created
+  ansible.builtin.assert:
+    that:
+      - _opensearch__indexcreate.json.shards_acknowledged
+      - _opensearch__indexcreate.json.index == "data"

@@ -1,0 +1,7 @@
+---
+opensearch__jvm_heapsize: "2g"
+opensearch__mem_limit: "4g"
+opensearch__version: "2.11.0"
+opensearch__jvm_heapsize: "2g"
+api_host: "localhost"
+# defaults file for opensearch

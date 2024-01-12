@@ -4,4 +4,4 @@
   become: true
   roles:
     - role: timezone
-    - role: elasticsearch
+    - role: opensearch
